@@ -1,17 +1,21 @@
 package com.mantasciutys.cryptotrader.service;
 
+import com.mantasciutys.cryptotrader.buy_timing.BuyDecision;
 import com.mantasciutys.cryptotrader.pojo.Currency;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
 import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class CurrencyService {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(CurrencyService.class);
+
     private final WebClient apiClient;
     private final String currenciesUrl;
 
@@ -20,17 +24,9 @@ public class CurrencyService {
         this.currenciesUrl = currenciesUrl;
     }
 
-    public Currency getCurrency(String currencyId) {
-        return apiClient
-                .get()
-                .uri(currenciesUrl + "/" + currencyId)
-                .accept(MediaType.APPLICATION_JSON)
-                .retrieve()
-                .bodyToMono(Currency.class)
-                .block();
-    }
-
     public List<Currency> getAllCurrencies() {
+        LOGGER.info("Started retrieving all currencies from public API");
+
         Currency[] monoCurrencies = apiClient
                 .get()
                 .uri(currenciesUrl)
