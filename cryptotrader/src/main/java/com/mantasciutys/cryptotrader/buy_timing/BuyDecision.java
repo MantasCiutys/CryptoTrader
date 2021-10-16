@@ -7,7 +7,7 @@ import java.util.List;
 @Component
 public class BuyDecision implements IBuyDecision {
 
-    private List<ShouldBuyAsset> shouldBuyAssetList;
+    private final List<ShouldBuyAsset> shouldBuyAssetList;
 
     public BuyDecision(List<ShouldBuyAsset> shouldBuyAssetList) {
         this.shouldBuyAssetList = shouldBuyAssetList;

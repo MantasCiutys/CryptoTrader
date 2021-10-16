@@ -9,9 +9,9 @@ import java.util.Calendar;
 @Component
 public class BuyAtParticularTime implements ShouldBuyAsset {
 
-    private int dayToBuy;
-    private int hourToBuy;
-    private IDateUtil dateUtil;
+    private final int dayToBuy;
+    private final int hourToBuy;
+    private final IDateUtil dateUtil;
 
     public BuyAtParticularTime(@Value("${buy.asset.day}") int dayToBuy, @Value("${buy.asset.hour}") int hourToBuy,
                                IDateUtil dateUtil) {
