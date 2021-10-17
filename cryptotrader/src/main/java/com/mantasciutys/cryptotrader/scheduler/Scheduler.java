@@ -36,7 +36,7 @@ public class Scheduler {
         // this is currently for testing only!!!
         // makes sure API is responding and working
         List<Currency> currencies = currencyService.getAllCurrencies();
-        
+
         LOGGER.info(String.valueOf(currencies));
     }
 }
