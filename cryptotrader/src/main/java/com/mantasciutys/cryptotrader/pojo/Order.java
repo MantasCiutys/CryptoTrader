@@ -97,8 +97,81 @@ public class Order {
             this.type = type;
             return this;
         }
-        // create more...
 
+        public OrderBuilder time_in_force(String time_in_force) {
+            this.time_in_force = time_in_force;
+            return this;
+        }
+
+        public OrderBuilder expire_time(Date expire_time) {
+            this.expire_time = expire_time;
+            return this;
+        }
+
+        public OrderBuilder post_only(boolean post_only) {
+            this.type = type;
+            return this;
+        }
+
+        public OrderBuilder created_at(Date created_at) {
+            this.created_at = created_at;
+            return this;
+        }
+
+        public OrderBuilder done_at(Date done_at) {
+            this.done_at = done_at;
+            return this;
+        }
+
+        public OrderBuilder done_reason(String done_reason) {
+            this.done_reason = done_reason;
+            return this;
+        }
+
+        public OrderBuilder reject_reason(String reject_reason) {
+            this.reject_reason = reject_reason;
+            return this;
+        }
+
+        public OrderBuilder fill_fees(String fill_fees) {
+            this.fill_fees = fill_fees;
+            return this;
+        }
+
+        public OrderBuilder filled_size(String filled_size) {
+            this.filled_size = filled_size;
+            return this;
+        }
+
+        public OrderBuilder executed_value(String executed_value) {
+            this.executed_value = executed_value;
+            return this;
+        }
+
+        public OrderBuilder status(String status) {
+            this.status = status;
+            return this;
+        }
+
+        public OrderBuilder settled(boolean settled) {
+            this.settled = settled;
+            return this;
+        }
+
+        public OrderBuilder stop(String stop) {
+            this.stop = stop;
+            return this;
+        }
+
+        public OrderBuilder stop_price(String stop_price) {
+            this.stop_price = stop_price;
+            return this;
+        }
+
+        public OrderBuilder funding_amount(String funding_amount) {
+            this.funding_amount = funding_amount;
+            return this;
+        }
 
         public Order build() {
             return new Order(this);
@@ -113,6 +186,21 @@ public class Order {
         funds = orderBuilder.funds;
         specified_funds = orderBuilder.specified_funds;
         type = orderBuilder.type;
+        time_in_force = orderBuilder.time_in_force;
+        expire_time = orderBuilder.expire_time;
+        post_only = orderBuilder.post_only;
+        created_at = orderBuilder.created_at;
+        done_at = orderBuilder.done_at;
+        done_reason = orderBuilder.done_reason;
+        reject_reason = orderBuilder.reject_reason;
+        fill_fees = orderBuilder.fill_fees;
+        filled_size = orderBuilder.filled_size;
+        executed_value = orderBuilder.executed_value;
+        status = orderBuilder.status;
+        settled = orderBuilder.settled;
+        stop = orderBuilder.stop;
+        stop_price = orderBuilder.stop_price;
+        funding_amount = orderBuilder.funding_amount;
     }
 
     public String getId() {
