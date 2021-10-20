@@ -1,5 +1,7 @@
 package com.mantasciutys.cryptotrader.pojo;
 
+import com.sun.org.apache.xpath.internal.operations.Or;
+
 import java.util.Date;
 
 public class Order {
@@ -27,6 +29,91 @@ public class Order {
     private String stop;
     private String stop_price;
     private String funding_amount;
+
+    public static class OrderBuilder {
+        //required
+        private final String id;
+
+        //optional
+        private String price;
+        private String size;
+        private String product_id;
+        private String profile_id;
+        private String side;
+        private String funds;
+        private String specified_funds;
+        private String type;
+        private String time_in_force;
+        private Date expire_time;
+        private boolean post_only;
+        private Date created_at;
+        private Date done_at;
+        private String done_reason;
+        private String reject_reason;
+        private String fill_fees;
+        private String filled_size;
+        private String executed_value;
+        private String status;
+        private boolean settled;
+        private String stop;
+        private String stop_price;
+        private String funding_amount;
+
+        public OrderBuilder(String id) {
+            this.id = id;
+        }
+
+        public OrderBuilder size(String size) {
+            this.size = size;
+            return this;
+        }
+
+        public OrderBuilder product_id(String product_id) {
+            this.product_id = product_id;
+            return this;
+        }
+
+        public OrderBuilder profile_id(String profile_id) {
+            this.profile_id = profile_id;
+            return this;
+        }
+
+        public OrderBuilder side(String side) {
+            this.side = side;
+            return this;
+        }
+
+        public OrderBuilder funds(String funds) {
+            this.funds = funds;
+            return this;
+        }
+
+        public OrderBuilder specified_funds(String specified_funds) {
+            this.specified_funds = specified_funds;
+            return this;
+        }
+
+        public OrderBuilder type(String type) {
+            this.type = type;
+            return this;
+        }
+        // create more...
+
+
+        public Order build() {
+            return new Order(this);
+        }
+    }
+
+    private Order(OrderBuilder orderBuilder) {
+        id = orderBuilder.id;
+        size = orderBuilder.size;
+        product_id = orderBuilder.product_id;
+        profile_id = orderBuilder.profile_id;
+        funds = orderBuilder.funds;
+        specified_funds = orderBuilder.specified_funds;
+        type = orderBuilder.type;
+    }
 
     public String getId() {
         return id;
