@@ -32,7 +32,7 @@ public class AccountService {
     public List<Account> getAllAccountsForProfile() {
         LOGGER.info("Started retrieving all accounts from the profile");
         //Account[] monoAccounts = new Account[0];
-        HttpHeaders headers = coinbaseWalletAuth.buildHeaders(HttpMethod.GET.name(), accountsUri);
+        HttpHeaders headers = coinbaseWalletAuth.buildHeaders(HttpMethod.GET.name(), accountsUri, null);
         HttpEntity<String> httpEntity = new HttpEntity<>(headers);
 
         ResponseEntity<Account[]> responseEntity = restTemplate.exchange(accountsUri,

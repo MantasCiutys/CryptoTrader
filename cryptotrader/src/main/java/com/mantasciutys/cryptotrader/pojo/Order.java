@@ -63,6 +63,11 @@ public class Order {
             this.id = id;
         }
 
+        public OrderBuilder price(String price) {
+            this.price = price;
+            return this;
+        }
+
         public OrderBuilder size(String size) {
             this.size = size;
             return this;
@@ -178,11 +183,16 @@ public class Order {
         }
     }
 
+    public Order() {
+    }
+
     private Order(OrderBuilder orderBuilder) {
         id = orderBuilder.id;
+        price = orderBuilder.price;
         size = orderBuilder.size;
         product_id = orderBuilder.product_id;
         profile_id = orderBuilder.profile_id;
+        side = orderBuilder.side;
         funds = orderBuilder.funds;
         specified_funds = orderBuilder.specified_funds;
         type = orderBuilder.type;
@@ -393,5 +403,35 @@ public class Order {
 
     public void setFunding_amount(String funding_amount) {
         this.funding_amount = funding_amount;
+    }
+
+    @Override
+    public String toString() {
+        return "Order{" +
+                "id='" + id + '\'' +
+                ", price='" + price + '\'' +
+                ", size='" + size + '\'' +
+                ", product_id='" + product_id + '\'' +
+                ", profile_id='" + profile_id + '\'' +
+                ", side='" + side + '\'' +
+                ", funds='" + funds + '\'' +
+                ", specified_funds='" + specified_funds + '\'' +
+                ", type='" + type + '\'' +
+                ", time_in_force='" + time_in_force + '\'' +
+                ", expire_time=" + expire_time +
+                ", post_only=" + post_only +
+                ", created_at=" + created_at +
+                ", done_at=" + done_at +
+                ", done_reason='" + done_reason + '\'' +
+                ", reject_reason='" + reject_reason + '\'' +
+                ", fill_fees='" + fill_fees + '\'' +
+                ", filled_size='" + filled_size + '\'' +
+                ", executed_value='" + executed_value + '\'' +
+                ", status='" + status + '\'' +
+                ", settled=" + settled +
+                ", stop='" + stop + '\'' +
+                ", stop_price='" + stop_price + '\'' +
+                ", funding_amount='" + funding_amount + '\'' +
+                '}';
     }
 }

@@ -1,5 +1,7 @@
 package com.mantasciutys.cryptotrader.authentication;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,35 +28,39 @@ public class CoinbaseWalletAuth {
     private String apiKey;
     private String apiSecret;
     private String apiPass;
+    private final ObjectMapper objectMapper;
 
     public CoinbaseWalletAuth(@Value("${coinbase.api.key}") String apiKey, @Value("${coinbase.api.secret}") String apiSecret,
-                              @Value("${coinbase.api.passphrase}") String apiPass) {
+                              @Value("${coinbase.api.passphrase}") String apiPass, ObjectMapper objectMapper) {
         this.apiKey = apiKey;
         this.apiSecret = apiSecret;
         this.apiPass = apiPass;
+        this.objectMapper = objectMapper;
     }
 
     // given a request, required headers for authentication added
-    public HttpHeaders buildHeaders(String method, String uri) {
+    public HttpHeaders buildHeaders(String method, String uri, Object objectBody) {
         HttpHeaders headers = new HttpHeaders();
         long timestamp = generateTimestamp();
-        String secretKeyEncrypted = buildSecretKey(method, uri, timestamp);
+        String secretKeyEncrypted = buildSecretKey(method, uri, timestamp, objectBody);
+        LOGGER.info("Secret key: " + secretKeyEncrypted);
 
         headers.add(CB_ACCESS_KEY_HEADER, apiKey);
         headers.add(CB_ACCESS_SIGN_HEADER, secretKeyEncrypted);
         headers.add(CB_ACCESS_TIMESTAMP_HEADER, String.valueOf(timestamp));
         headers.add(CB_ACCESS_PASSPHRASE, apiPass);
         headers.add(USER_AGENT_HEADER, "Testing my own application");
+        headers.add("Content-Type", "application/json");
 
         return headers;
     }
 
-    private String buildSecretKey(String method, String uri, long timestamp) {
+    private String buildSecretKey(String method, String uri, long timestamp, Object objectBody) {
         String encoded = "";
         LOGGER.info("Timestamp is " + timestamp);
 
         try {
-            String prehash = timestamp + method.toUpperCase() + uri;
+            String prehash = timestamp + method.toUpperCase() + uri + convertToJson(objectBody);
             byte[] secretDecoded = Base64.getDecoder().decode(apiSecret);
             SecretKeySpec keyspec = new SecretKeySpec(secretDecoded, Mac.getInstance("HmacSHA256").getAlgorithm());
             Mac sha256 = (Mac) Mac.getInstance("HmacSHA256").clone();
@@ -72,5 +78,21 @@ public class CoinbaseWalletAuth {
 
     private long generateTimestamp() {
         return System.currentTimeMillis() / 1000L;
+    }
+
+    public String convertToJson(Object object) {
+
+        if (object == null) return "";
+
+        String serialized = "";
+        try {
+            serialized = objectMapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            LOGGER.error("Could not convert to JSON", e);
+            throw new RuntimeException("Unable to serialize");
+        }
+
+        LOGGER.info("Serialized: " + serialized);
+        return serialized;
     }
 }
