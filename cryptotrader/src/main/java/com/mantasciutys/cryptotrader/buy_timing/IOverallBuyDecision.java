@@ -1,5 +1,5 @@
 package com.mantasciutys.cryptotrader.buy_timing;
 
-public interface IBuyDecision {
+public interface IOverallBuyDecision {
     boolean shouldBuy();
 }

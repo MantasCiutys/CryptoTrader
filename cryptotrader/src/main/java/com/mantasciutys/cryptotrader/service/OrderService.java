@@ -49,6 +49,7 @@ public class OrderService {
         );
 
         return responseEntity.getBody();
+//        return null;
     }
 
     public List<Fill> getAllFills() {
@@ -64,6 +65,22 @@ public class OrderService {
                 HttpMethod.GET,
                 httpEntity,
                 Fill[].class
+        );
+
+        return Arrays.asList(responseEntity.getBody());
+    }
+
+    public List<Order> getAllOrders() {
+        LOGGER.info("Retrieving all orders...");
+
+
+        HttpHeaders headers = coinbaseWalletAuth.buildHeaders(HttpMethod.GET.name(), ordersUri, null);
+        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+
+        ResponseEntity<Order[]> responseEntity = restTemplate.exchange(ordersUri,
+                HttpMethod.GET,
+                httpEntity,
+                Order[].class
         );
 
         return Arrays.asList(responseEntity.getBody());

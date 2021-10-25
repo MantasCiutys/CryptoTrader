@@ -1,6 +1,6 @@
 package com.mantasciutys.cryptotrader.scheduler;
 
-import com.mantasciutys.cryptotrader.asset_buyer.IAssetBuyer;
+import com.mantasciutys.cryptotrader.buy_timing.IOverallBuyDecision;
 import com.mantasciutys.cryptotrader.exceptions.AccountDoesNotExistException;
 import com.mantasciutys.cryptotrader.pojo.*;
 import com.mantasciutys.cryptotrader.service.*;
@@ -15,18 +15,20 @@ import java.util.List;
 
 @Configuration
 @EnableScheduling
-public class Scheduler {
+// This scheduler is executed very often
+// It starts the process that determines whether an asset should be bought or not
+public class Scheduler implements IScheduler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
 
-    private final IAssetBuyer assetBuyer;
+    private final IOverallBuyDecision buyDecision;
     private final CurrencyService currencyService;
     private final AccountService accountService;
     private final ProductService productService;
     private final OrderService orderService;
 
-    public Scheduler(IAssetBuyer assetBuyer, CurrencyService currencyService, AccountService accountService, ProductService productService, OrderService orderService) {
-        this.assetBuyer = assetBuyer;
+    public Scheduler(IOverallBuyDecision buyDecision, CurrencyService currencyService, AccountService accountService, ProductService productService, OrderService orderService) {
+        this.buyDecision = buyDecision;
         this.currencyService = currencyService;
         this.accountService = accountService;
         this.productService = productService;
@@ -34,13 +36,18 @@ public class Scheduler {
     }
 
     @Scheduled(fixedDelayString = "${trigger.buy.execution}")
-    public void triggerBuy() {
-        LOGGER.info("Method for buying triggered");
+    public void trigger() {
+        LOGGER.info("Method for checking whether asset should be bought triggered");
 
-        List<Account> accounts = accountService.getAllAccountsForProfile();
-        LOGGER.info(String.valueOf(accounts));
+        if (buyDecision.shouldBuy()) {
+            // buy
+
+        } else {
+            // not buy
+        }
 
         try {
+            List<Account> accounts = accountService.getAllAccountsForProfile();
             Account mainAccount = AccountHelper.getAccountGivenCurrency("GBP", accounts);
             LOGGER.info("Main account: " + mainAccount);
             BigDecimal accountBalance = mainAccount.getBalance();
@@ -55,6 +62,7 @@ public class Scheduler {
                     .side("buy")
                     .product_id(product.getId())
                     .funds(amountToBuy.toString())
+                    .post_only(true)
                     .build();
 
             LOGGER.info("Order to buy: " + order);
@@ -62,25 +70,15 @@ public class Scheduler {
             Order boughtOrder = orderService.buyOrder(order);
             LOGGER.info("Bought order: " + boughtOrder);
 
-            // for testing only
-            Thread.sleep(3000);
-
-            List<Fill> fills = orderService.getAllFills();
-            LOGGER.info("Number of fills : " + fills.size());
+            List<Order> orders = orderService.getAllOrders();
+            LOGGER.info("Number of orders : " + orders.size());
 
 
         } catch (AccountDoesNotExistException e) {
             LOGGER.warn("Account has not been found!");
-        } catch (InterruptedException e) {
+        } catch (RuntimeException e) {
+            LOGGER.error("Some run time error occurred. Stack trace printed below");
             e.printStackTrace();
         }
-
-        if (assetBuyer.buyAsset()) {
-             // buy
-
-        } else {
-             // not buy
-        }
-
     }
 }

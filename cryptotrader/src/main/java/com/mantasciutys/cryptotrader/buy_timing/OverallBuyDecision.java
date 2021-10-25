@@ -7,19 +7,19 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class BuyDecision implements IBuyDecision {
+public class OverallBuyDecision implements IOverallBuyDecision {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(BuyDecision.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(OverallBuyDecision.class);
 
-    private final List<ShouldBuyAsset> shouldBuyAssetList;
+    private final List<ISingleBuyDecision> shouldBuyAssetList;
 
-    public BuyDecision(List<ShouldBuyAsset> shouldBuyAssetList) {
+    public OverallBuyDecision(List<ISingleBuyDecision> shouldBuyAssetList) {
         this.shouldBuyAssetList = shouldBuyAssetList;
     }
 
     @Override
     public boolean shouldBuy() {
-        for (ShouldBuyAsset shouldBuyAsset : shouldBuyAssetList) {
+        for (ISingleBuyDecision shouldBuyAsset : shouldBuyAssetList) {
             if (shouldBuyAsset.shouldBuy()) {
                 LOGGER.info("Some condition for buying is true. Asset will be bought.");
                 return true;
