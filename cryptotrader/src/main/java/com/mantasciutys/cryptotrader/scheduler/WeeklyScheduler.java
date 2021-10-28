@@ -5,7 +5,7 @@ import com.mantasciutys.cryptotrader.exceptions.AccountDoesNotExistException;
 import com.mantasciutys.cryptotrader.pojo.Account;
 import com.mantasciutys.cryptotrader.pojo.Order;
 import com.mantasciutys.cryptotrader.pojo.Product;
-import com.mantasciutys.cryptotrader.service.AccountHelper;
+import com.mantasciutys.cryptotrader.util.AccountHelper;
 import com.mantasciutys.cryptotrader.service.AccountService;
 import com.mantasciutys.cryptotrader.service.OrderService;
 import com.mantasciutys.cryptotrader.service.ProductService;

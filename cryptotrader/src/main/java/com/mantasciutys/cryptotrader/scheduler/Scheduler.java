@@ -4,6 +4,7 @@ import com.mantasciutys.cryptotrader.buy_timing.IOverallBuyDecision;
 import com.mantasciutys.cryptotrader.exceptions.AccountDoesNotExistException;
 import com.mantasciutys.cryptotrader.pojo.*;
 import com.mantasciutys.cryptotrader.service.*;
+import com.mantasciutys.cryptotrader.util.AccountHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;

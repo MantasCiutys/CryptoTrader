@@ -1,4 +1,4 @@
-package com.mantasciutys.cryptotrader.service;
+package com.mantasciutys.cryptotrader.util;
 
 import com.mantasciutys.cryptotrader.exceptions.AccountDoesNotExistException;
 import com.mantasciutys.cryptotrader.pojo.Account;
