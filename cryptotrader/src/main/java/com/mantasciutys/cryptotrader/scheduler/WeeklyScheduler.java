@@ -1,6 +1,7 @@
 package com.mantasciutys.cryptotrader.scheduler;
 
 import com.mantasciutys.cryptotrader.buy_timing.IOverallBuyDecision;
+import com.mantasciutys.cryptotrader.buyer.IBuyer;
 import com.mantasciutys.cryptotrader.enums.OrderSide;
 import com.mantasciutys.cryptotrader.enums.OrderType;
 import com.mantasciutys.cryptotrader.exceptions.AccountDoesNotExistException;
@@ -30,18 +31,14 @@ public class WeeklyScheduler implements IScheduler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(WeeklyScheduler.class);
 
-    private final IOverallBuyDecision buyDecision;
-    private final AccountService accountService;
     private final ProductService productService;
-    private final OrderService orderService;
+    private final IBuyer orderBuyer;
     private final BigDecimal amountToBuy;
 
-    public WeeklyScheduler(IOverallBuyDecision buyDecision, AccountService accountService, ProductService productService, OrderService orderService,
+    public WeeklyScheduler(ProductService productService, IBuyer orderBuyer,
                            @Value("${weekly.buy.amount.gbp}") BigDecimal amountToBuy) {
-        this.buyDecision = buyDecision;
-        this.accountService = accountService;
         this.productService = productService;
-        this.orderService = orderService;
+        this.orderBuyer = orderBuyer;
         this.amountToBuy = amountToBuy;
     }
 
@@ -50,35 +47,17 @@ public class WeeklyScheduler implements IScheduler {
     public void trigger() {
         LOGGER.info("Weekly buying action executing!");
 
-        try {
-            List<Account> accounts = accountService.getAllAccountsForProfile();
-            Account mainAccount = AccountHelper.getAccountGivenCurrency("GBP", accounts);
+        Product product = productService.getProductById("BTC-GBP");
 
-            BigDecimal accountBalance = mainAccount.getBalance();
-            Product product = productService.getProductById("BTC-GBP");
+        Order order = new Order.OrderBuilder("12345")
+                .type(OrderType.MARKET.getOrderType())
+                .side(OrderSide.BUY.getOrderSide())
+                .product_id(product.getId())
+                .funds(amountToBuy.toString())
+                .build();
 
-            if (accountBalance.compareTo(amountToBuy) > 0) {
+        LOGGER.info("Order to buy: " + order);
 
-                Order order = new Order.OrderBuilder("12345")
-                        .type(OrderType.MARKET.getOrderType())
-                        .side(OrderSide.BUY.getOrderSide())
-                        .product_id(product.getId())
-                        .funds(amountToBuy.toString())
-                        .build();
-
-                LOGGER.info("Order to buy: " + order);
-
-                Order boughtOrder = orderService.buyOrder(order);
-                LOGGER.info("Bought order: " + boughtOrder);
-            } else {
-                LOGGER.warn("Asset was not bought because of insufficient funds!");
-            }
-
-        } catch (AccountDoesNotExistException e) {
-            LOGGER.warn("Account has not been found!");
-        } catch (RuntimeException e) {
-            LOGGER.error("Some error has been caught. Stack trace printed.");
-            e.printStackTrace();
-        }
+        orderBuyer.buyOrder(order, amountToBuy);
     }
 }
