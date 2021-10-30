@@ -1,6 +1,8 @@
 package com.mantasciutys.cryptotrader.scheduler;
 
 import com.mantasciutys.cryptotrader.buy_timing.IOverallBuyDecision;
+import com.mantasciutys.cryptotrader.enums.OrderSide;
+import com.mantasciutys.cryptotrader.enums.OrderType;
 import com.mantasciutys.cryptotrader.exceptions.AccountDoesNotExistException;
 import com.mantasciutys.cryptotrader.pojo.Account;
 import com.mantasciutys.cryptotrader.pojo.Order;
@@ -58,8 +60,8 @@ public class WeeklyScheduler implements IScheduler {
             if (accountBalance.compareTo(amountToBuy) > 0) {
 
                 Order order = new Order.OrderBuilder("12345")
-                        .type("market")
-                        .side("buy")
+                        .type(OrderType.MARKET.getOrderType())
+                        .side(OrderSide.BUY.getOrderSide())
                         .product_id(product.getId())
                         .funds(amountToBuy.toString())
                         .build();
