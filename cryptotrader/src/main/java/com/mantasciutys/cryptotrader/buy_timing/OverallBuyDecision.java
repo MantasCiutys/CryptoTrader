@@ -1,7 +1,6 @@
 package com.mantasciutys.cryptotrader.buy_timing;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -9,7 +8,7 @@ import java.util.List;
 @Component
 public class OverallBuyDecision implements IOverallBuyDecision {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OverallBuyDecision.class);
+    private static final Logger LOGGER = Logger.getLogger(OverallBuyDecision.class);
 
     private final List<ISingleBuyDecision> shouldBuyAssetList;
 

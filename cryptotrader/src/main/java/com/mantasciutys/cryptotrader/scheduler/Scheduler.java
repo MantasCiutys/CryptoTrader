@@ -5,8 +5,7 @@ import com.mantasciutys.cryptotrader.exceptions.AccountDoesNotExistException;
 import com.mantasciutys.cryptotrader.pojo.*;
 import com.mantasciutys.cryptotrader.service.*;
 import com.mantasciutys.cryptotrader.util.AccountHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -20,7 +19,7 @@ import java.util.List;
 // It starts the process that determines whether an asset should be bought or not
 public class Scheduler implements IScheduler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
+    private static final Logger LOGGER = Logger.getLogger(Scheduler.class);
 
     private final IOverallBuyDecision buyDecision;
     private final AccountService accountService;

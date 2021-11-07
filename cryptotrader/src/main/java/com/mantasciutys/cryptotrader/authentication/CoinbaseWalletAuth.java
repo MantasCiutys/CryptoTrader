@@ -2,12 +2,10 @@ package com.mantasciutys.cryptotrader.authentication;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-
+import org.apache.log4j.Logger;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import javax.management.RuntimeErrorException;
@@ -18,7 +16,7 @@ import java.util.Base64;
 @Component
 public class CoinbaseWalletAuth {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(CoinbaseWalletAuth.class);
+    private static final Logger LOGGER = Logger.getLogger(CoinbaseWalletAuth.class);
     private static final String CB_ACCESS_KEY_HEADER = "CB-ACCESS-KEY";
     private static final String CB_ACCESS_SIGN_HEADER = "CB-ACCESS-SIGN";
     private static final String CB_ACCESS_TIMESTAMP_HEADER = "CB-ACCESS-TIMESTAMP";

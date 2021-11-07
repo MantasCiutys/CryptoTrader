@@ -2,8 +2,7 @@ package com.mantasciutys.cryptotrader.service;
 
 import com.mantasciutys.cryptotrader.authentication.CoinbaseWalletAuth;
 import com.mantasciutys.cryptotrader.pojo.Account;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ import java.util.List;
 
 @Service
 public class AccountService {
-    private static final Logger LOGGER = LoggerFactory.getLogger(AccountService.class);
+    private static final Logger LOGGER = Logger.getLogger(AccountService.class);
 
     private final WebClient apiClient;
     private final RestTemplate restTemplate;

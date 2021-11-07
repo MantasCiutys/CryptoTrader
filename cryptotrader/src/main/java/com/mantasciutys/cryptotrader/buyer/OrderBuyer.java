@@ -11,8 +11,7 @@ import com.mantasciutys.cryptotrader.service.AccountService;
 import com.mantasciutys.cryptotrader.service.OrderService;
 import com.mantasciutys.cryptotrader.service.ProductService;
 import com.mantasciutys.cryptotrader.util.AccountHelper;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ import java.util.List;
 @Component
 public class OrderBuyer implements IBuyer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(OrderBuyer.class);
+    private static final Logger LOGGER = Logger.getLogger(OrderBuyer.class);
 
     private final AccountService accountService;
     private final OrderService orderService;

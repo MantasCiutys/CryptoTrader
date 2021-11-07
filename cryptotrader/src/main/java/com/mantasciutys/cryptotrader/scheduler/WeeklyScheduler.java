@@ -12,8 +12,7 @@ import com.mantasciutys.cryptotrader.util.AccountHelper;
 import com.mantasciutys.cryptotrader.service.AccountService;
 import com.mantasciutys.cryptotrader.service.OrderService;
 import com.mantasciutys.cryptotrader.service.ProductService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -29,7 +28,7 @@ This scheduler is executed once a week, not related to any other conditions
  */
 public class WeeklyScheduler implements IScheduler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(WeeklyScheduler.class);
+    private static final Logger LOGGER = Logger.getLogger(WeeklyScheduler.class);
 
     private final ProductService productService;
     private final IBuyer orderBuyer;
