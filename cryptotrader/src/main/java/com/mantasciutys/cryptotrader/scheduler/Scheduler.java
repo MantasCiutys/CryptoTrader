@@ -23,14 +23,12 @@ public class Scheduler implements IScheduler {
     private static final Logger LOGGER = LoggerFactory.getLogger(Scheduler.class);
 
     private final IOverallBuyDecision buyDecision;
-    private final CurrencyService currencyService;
     private final AccountService accountService;
     private final ProductService productService;
     private final OrderService orderService;
 
-    public Scheduler(IOverallBuyDecision buyDecision, CurrencyService currencyService, AccountService accountService, ProductService productService, OrderService orderService) {
+    public Scheduler(IOverallBuyDecision buyDecision, AccountService accountService, ProductService productService, OrderService orderService) {
         this.buyDecision = buyDecision;
-        this.currencyService = currencyService;
         this.accountService = accountService;
         this.productService = productService;
         this.orderService = orderService;
@@ -70,10 +68,6 @@ public class Scheduler implements IScheduler {
 
             Order boughtOrder = orderService.buyOrder(order);
             LOGGER.info("Bought order: " + boughtOrder);
-
-            List<Order> orders = orderService.getAllOrders();
-            LOGGER.info("Number of orders : " + orders.size());
-
 
         } catch (AccountDoesNotExistException e) {
             LOGGER.warn("Account has not been found!");

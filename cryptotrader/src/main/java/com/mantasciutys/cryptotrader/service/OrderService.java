@@ -1,21 +1,15 @@
 package com.mantasciutys.cryptotrader.service;
 
 import com.mantasciutys.cryptotrader.authentication.CoinbaseWalletAuth;
-import com.mantasciutys.cryptotrader.pojo.Account;
-import com.mantasciutys.cryptotrader.pojo.Fill;
 import com.mantasciutys.cryptotrader.pojo.Order;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
-
-import java.util.Arrays;
-import java.util.List;
 
 @Service
 public class OrderService {
@@ -42,47 +36,17 @@ public class OrderService {
         HttpHeaders headers = coinbaseWalletAuth.buildHeaders(HttpMethod.POST.name(), ordersUri, order);
         HttpEntity<String> httpEntity = new HttpEntity<>(coinbaseWalletAuth.convertToJson(order), headers);
 
-        ResponseEntity<Order> responseEntity = restTemplate.exchange(ordersUri,
-                HttpMethod.POST,
-                httpEntity,
-                Order.class
-        );
-
-        return responseEntity.getBody();
-//        return null;
-    }
-
-    public List<Fill> getAllFills() {
-        LOGGER.info("Retrieving all fills...");
-
-        String fullFillsUri = fillsUri;
-        fullFillsUri += "?product_id=BTC-GBP&limit=100";
-
-        HttpHeaders headers = coinbaseWalletAuth.buildHeaders(HttpMethod.GET.name(), fullFillsUri, null);
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-
-        ResponseEntity<Fill[]> responseEntity = restTemplate.exchange(fullFillsUri,
-                HttpMethod.GET,
-                httpEntity,
-                Fill[].class
-        );
-
-        return Arrays.asList(responseEntity.getBody());
-    }
-
-    public List<Order> getAllOrders() {
-        LOGGER.info("Retrieving all orders...");
-
-
-        HttpHeaders headers = coinbaseWalletAuth.buildHeaders(HttpMethod.GET.name(), ordersUri, null);
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
-
-        ResponseEntity<Order[]> responseEntity = restTemplate.exchange(ordersUri,
-                HttpMethod.GET,
-                httpEntity,
-                Order[].class
-        );
-
-        return Arrays.asList(responseEntity.getBody());
+        try {
+            ResponseEntity<Order> responseEntity = restTemplate.exchange(ordersUri,
+                    HttpMethod.POST,
+                    httpEntity,
+                    Order.class
+            );
+            return responseEntity.getBody();
+        } catch (HttpClientErrorException e) {
+            LOGGER.error("Error when buying an order");
+            e.printStackTrace();
+            throw e;
+        }
     }
 }
