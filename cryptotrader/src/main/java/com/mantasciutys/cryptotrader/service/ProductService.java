@@ -1,8 +1,6 @@
 package com.mantasciutys.cryptotrader.service;
 
 import com.mantasciutys.cryptotrader.authentication.CoinbaseWalletAuth;
-import com.mantasciutys.cryptotrader.pojo.Currency;
-import com.mantasciutys.cryptotrader.pojo.Order;
 import com.mantasciutys.cryptotrader.pojo.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
