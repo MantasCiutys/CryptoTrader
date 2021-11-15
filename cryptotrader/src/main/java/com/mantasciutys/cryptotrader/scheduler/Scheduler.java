@@ -36,7 +36,8 @@ public class Scheduler implements IScheduler {
     @Scheduled(fixedDelayString = "${trigger.buy.execution}")
     public void trigger() {
         LOGGER.info("Method for checking whether asset should be bought triggered");
-
+        // commented out for now as deployment tests are done
+        /*
         if (buyDecision.shouldBuy()) {
             // buy
 
@@ -74,5 +75,7 @@ public class Scheduler implements IScheduler {
             LOGGER.error("Some run time error occurred. Stack trace printed below");
             e.printStackTrace();
         }
+
+         */
     }
 }
